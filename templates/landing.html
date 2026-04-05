@@ -26,7 +26,7 @@
 
     <div class="hv2-actions">
         <a href="{{ url_for('register') }}" class="hv2-btn">Create free account</a>
-        <a href="#" class="hv2-btn">See how it works</a>
+        <a href="#" class="hv2-btn" id="open-modal">See how it works</a>
     </div>
 
     <div class="hv2-mock">
@@ -97,4 +97,57 @@
     </div>
 </section>
 
+<!-- Video modal -->
+<div id="video-modal" class="vmodal-overlay" aria-hidden="true">
+    <div class="vmodal-box">
+        <button class="vmodal-close" id="close-modal" aria-label="Close">&times;</button>
+        <div class="vmodal-video">
+            <iframe
+                id="video-iframe"
+                src=""
+                data-src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1"
+                title="See how Spendly works"
+                frameborder="0"
+                allow="autoplay; encrypted-media"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    var modal    = document.getElementById('video-modal');
+    var iframe   = document.getElementById('video-iframe');
+    var openBtn  = document.getElementById('open-modal');
+    var closeBtn = document.getElementById('close-modal');
+
+    function openModal(e) {
+        e.preventDefault();
+        iframe.src = iframe.dataset.src;
+        modal.classList.add('vmodal-visible');
+        modal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal() {
+        iframe.src = '';
+        modal.classList.remove('vmodal-visible');
+        modal.setAttribute('aria-hidden', 'true');
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeModal();
+    });
+}());
+</script>
 {% endblock %}
